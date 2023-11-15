@@ -269,6 +269,8 @@ namespace Arkanoid
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
+            if (!initialized) return;
+
             if (e.KeyCode == Keys.A && padle.movingLeft)
             {
                 padle.Speed += Padle.MaxSpeed;
@@ -283,6 +285,8 @@ namespace Arkanoid
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
+            if (!initialized) return;
+
             if (e.KeyCode == Keys.A && !padle.movingLeft)
             {
                 padle.Speed -= Padle.MaxSpeed;

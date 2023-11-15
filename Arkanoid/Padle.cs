@@ -1,8 +1,5 @@
-﻿using System.Windows.Forms;
-
-namespace Arkanoid
+﻿namespace Arkanoid
 {
-
     // Каретка по факту является просто блоком, который может двигаться
     // и не может быть уничтожен
     public class Padle : Block

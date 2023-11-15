@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.btn_start = new System.Windows.Forms.Button();
             this.mainTimer = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // btn_start
@@ -57,6 +58,7 @@
             this.Controls.Add(this.btn_start);
             this.KeyPreview = true;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Arkanoid";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
@@ -69,6 +71,7 @@
 
         private System.Windows.Forms.Button btn_start;
         private System.Windows.Forms.Timer mainTimer;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
