@@ -25,7 +25,7 @@ namespace Arkanoid
         bool initialized = false;
         Random random = new Random();
 
-        // В конструкторе будем вызывать стандарртную инициализацию
+        // В конструкторе будем вызывать стандартную инициализацию
         // Также определим стандартные размеры окна
         public MainForm()
         {
@@ -48,13 +48,15 @@ namespace Arkanoid
             {
                 for (int j = 0; j < columns; j++)
                 {
+                    // Сделаем 2 хп для блоков первого (для игрока) ряда
                     blocks.Add(new DestroyableBlock(i == rows - 1 ? 2 : 1));
                     var last = blocks.Last();
-                    last._coords = new Point(j, i);
+                    last.coordX = j;
+                    last.coordY = i;
                     last.Parent = this;
                     last.Show();
                     // Цвет блока зависит от количества хит-поинтов
-                    last.ForeColor = last._health > 1 ? Color.DarkGreen : Color.Green;
+                    last.ForeColor = last.Health > 1 ? Color.DarkGreen : Color.Green;
                 }
             }
 
@@ -99,7 +101,7 @@ namespace Arkanoid
             ResumeLayout();
         }
 
-        // Обработки нажатия на кнопку старта
+        // Обработка нажатия на кнопку старта
         private void btn_start_Click(object sender, EventArgs e)
         {
             btn_start.Enabled = false;
@@ -108,13 +110,13 @@ namespace Arkanoid
         }
 
         // Обработка победы
-        private void Lost()
+        private void Lose()
         {
             StopGame();
             btn_start.Text = "Вы проиграли :(\r\nНачать с начала?";
         }
 
-        // Обработки поражения
+        // Обработка поражения
         private void Win()
         {
             StopGame();
@@ -150,7 +152,7 @@ namespace Arkanoid
 
             if (ball.yf > Bounds.Height + 50)
             {
-                Lost();
+                Lose();
                 return;
             }
 
@@ -195,9 +197,9 @@ namespace Arkanoid
                 {
                     if (CheckIntersectionWithBlock(block))
                     {
-                        block._health--; // Уменьшим хп
+                        block.Health--; // Уменьшим хп
 
-                        switch (block._health)
+                        switch (block.Health)
                         { // Обновим цвет блока в завимисимости от оставшихся хит-поинтов
                             case 0:
                                 block.Hide();
@@ -271,15 +273,24 @@ namespace Arkanoid
         {
             if (!initialized) return;
 
-            if (e.KeyCode == Keys.A && padle.movingLeft)
+            if (e.KeyCode == Keys.A)
             {
-                padle.Speed += Padle.MaxSpeed;
-                padle.movingLeft = false;
+                if (padle.movingLeft)
+                {
+                    padle.Speed += Padle.MaxSpeed;
+                    padle.movingLeft = false;
+                }
+                e.SuppressKeyPress = true;
             }
-            if (e.KeyCode == Keys.D && padle.movingRight)
+                
+            if (e.KeyCode == Keys.D)
             {
-                padle.Speed -= Padle.MaxSpeed;
-                padle.movingRight = false;
+                if (padle.movingRight)
+                {
+                    padle.Speed -= Padle.MaxSpeed;
+                    padle.movingRight = false;
+                }
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -287,18 +298,25 @@ namespace Arkanoid
         {
             if (!initialized) return;
 
-            if (e.KeyCode == Keys.A && !padle.movingLeft)
+            if (e.KeyCode == Keys.A)
             {
-                padle.Speed -= Padle.MaxSpeed;
-                padle.movingLeft = true;
+                if (!padle.movingLeft)
+                {
+                    padle.Speed -= Padle.MaxSpeed;
+                    padle.movingLeft = true;
+                }
+                e.SuppressKeyPress = true;
             }
                 
-            if (e.KeyCode == Keys.D && !padle.movingRight)
+            if (e.KeyCode == Keys.D)
             {
-                padle.Speed += Padle.MaxSpeed;
-                padle.movingRight = true;
-            }
-                
+                if (!padle.movingRight)
+                {
+                    padle.Speed += Padle.MaxSpeed;
+                    padle.movingRight = true;
+                }
+                e.SuppressKeyPress = true;
+            }      
         }
 
 
@@ -316,7 +334,7 @@ namespace Arkanoid
                 {
                     block.Width = width;
                     block.Height = height;
-                    block.Location = new Point(block._coords.X * block.Width, block._coords.Y * block.Height);
+                    block.Location = new Point(block.coordX * block.Width, block.coordY * block.Height);
                 }
 
                 padle.Width = width;

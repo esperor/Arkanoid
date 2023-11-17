@@ -4,12 +4,13 @@ namespace Arkanoid
 {
     public class DestroyableBlock : Block
     {
-        public int _health; // у блоков есть хит-поинты
-        public Point _coords; // и координаты в матрице блоков
+        public int Health; // у блоков есть хит-поинты
+        public int coordX; // и координаты в матрице блоков
+        public int coordY;
 
         public DestroyableBlock(int health)
         {
-            this._health = health;
+            this.Health = health;
         }
     }
 }
